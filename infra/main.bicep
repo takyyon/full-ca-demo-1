@@ -22,6 +22,7 @@ param apiContainerAppName string = 'api-service'
 param apiImageName string = ''
 param webContainerAppName string = 'web-service'
 param webImageName string = ''
+param azureTags string = ''
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
