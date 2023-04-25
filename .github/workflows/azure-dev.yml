@@ -1,5 +1,16 @@
 on:
   workflow_dispatch:
+    inputs:
+      provision:
+        description: 'Run azd provision'
+        required: false
+        type: boolean
+        default: true
+      deploy:
+        description: 'Run azd deploy'
+        required: false
+        type: boolean
+        default: true
   push:
     branches:
       - main
@@ -49,6 +60,7 @@ jobs:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Azure Dev Provision
+        if: ${{ github.event.inputs.provision }}
         run: azd provision --no-prompt
         env:
           AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
@@ -59,6 +71,7 @@ jobs:
           GITHUB_RUN_ID: ${{ GITHUB.run_id }}
 
       - name: Azure Dev Deploy
+        if: ${{ github.event.inputs.deploy }}
         run: azd deploy --no-prompt
         env:
           AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
